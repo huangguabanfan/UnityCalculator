@@ -1,2 +1,6 @@
 # UnityCalculator
-Calculator implementation based on unity
+
+基于Unity实现的计算器
+项目中的核心算法分为直接简单计算中缀表达式(不含括号)
+以及通用的计算后缀表达式(可以包含括号)的方法
+其中使用后缀表达式的方法使用策略模式以及工厂模式进行解耦，有些面试会这样要求，但感觉是为了解耦而解耦
