@@ -42,7 +42,7 @@ public class ComplexCalculatorMgrOpt : Singleton<ComplexCalculatorMgrOpt>
                 continue;
             }
             
-            if (char.IsDigit(str[i]))
+            if (char.IsDigit(str[i]) || str[i] == '.')
             {
                 //找到一个数字字符后,然后往后找,直到组装完一个完整的数字
                 double number = 0;
@@ -50,6 +50,18 @@ public class ComplexCalculatorMgrOpt : Singleton<ComplexCalculatorMgrOpt>
                 {
                     number = number * 10 + (str[i] - '0');
                     i++;
+                }
+                
+                if (i < str.Length && str[i] == '.')
+                {
+                    double pow = 0.1;
+                    i++;
+                    while (i < str.Length && char.IsDigit(str[i]))
+                    {
+                        number = number + (str[i] - '0') * pow;
+                        pow = pow * 0.1;
+                        i++;
+                    }
                 }
 
                 //避免多加一次i
@@ -98,10 +110,10 @@ public class ComplexCalculatorMgrOpt : Singleton<ComplexCalculatorMgrOpt>
                 //规范显示
                 expression += ' ';
             }
-            else if (isOperand(str[i]))
+            else if (isOperand(str[i]) || str[i] == '.')
             {
                 //往后直接找,组合一个数添加进去
-                while (i < str.Length && isOperand(str[i]))
+                while (i < str.Length && (isOperand(str[i]) || str[i] == '.'))
                 {
                     expression += str[i];
                     i++;
@@ -135,6 +147,8 @@ public class ComplexCalculatorMgrOpt : Singleton<ComplexCalculatorMgrOpt>
             else if (str[i] == ')')
             {
                 //遇到有括号的话就需要把整个括号内的内容(运算符)进行结算,将内容全部加入到表达式即可
+                //如果括号内有更加复杂的运算比如(2 + 3 * 2),那么括号里面的内容处理交给上面的if
+                //走到这里相当于只有单一的符号了,相当于把括号里面的内容结算并且消除括号
                 while (stack.Count > 0 && stack.Peek() != '(')
                 {
                     expression += stack.Pop();

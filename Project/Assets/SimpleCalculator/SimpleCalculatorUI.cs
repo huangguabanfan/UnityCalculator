@@ -134,9 +134,9 @@ public class SimpleCalculatorUI : MonoBehaviour
         
         _result = CalculateInterface(_formula);
         _currentInputFormula = _result.ToString();
-        _formula = "";
+        _formula = _currentInputFormula;
         InputText.text = _currentInputFormula;
-        SetState(State.Idle);
+        SetState(State.InputNumber);
     }
     
     /// <summary>
